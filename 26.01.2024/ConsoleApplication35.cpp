@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -12,14 +12,58 @@ class Student {
 	int uniqId;
 	string name;
 	int* marks = nullptr;
+	int countMarks = 0;
 public:
 	Student() {
 		name = names[random(0, countNames - 1)];
 		uniqId = id++;
 	}
+	Student (Student& st): Student() {
+	
+		countMarks = st.countMarks;
+		marks = new int[countMarks];
+		for (int i = 0; i < countMarks; i++) {
+			marks[i] = st.marks[i];
+		}
+	}
+
+	~Student() {
+		if (marks != nullptr) delete[] marks;
+	}
+
+	void operator = (Student& st) {
+		name = st.name;
+		countMarks = st.countMarks;
+		marks = new int[countMarks];
+		for (int i = 0; i < countMarks; i++) {
+			marks[i] = st.marks[i];
+		}
+	}
+
+	void addMark(int mark) {
+		int* buf = new int[countMarks + 1];
+		for (int i = 0; i < countMarks; i++) {
+			buf[i] = marks[i];
+		}
+		buf[countMarks++] = mark;
+		delete[]marks;
+		marks = buf;
+	}
+
+	void changeMark(int index, int mark) {
+		if(index>=0 &&index<countMarks){
+			marks[index] = mark;
+		}
+	}
+	
+	
 
 	void showInfo() {
-		cout << uniqId << " : " << name << endl;
+		cout << uniqId << " : " << name<<" : ";
+		for (int i = 0; i < countMarks; i++) {
+			cout << marks[i] << " ";
+		}
+		cout << endl;
 	}
 
 };
@@ -49,34 +93,50 @@ char GroupName::alpha='А';
 class Group {
 	
 	string uniqId;
-	Student* students;
-	int countStudents = 0;
+	Student** students;
+	int countStudents;
 public:
 	Group() {
+		this->countStudents = 0;
 		uniqId = GroupName::getUniqGroupName();
 		if (uniqId == "") cout << "достигнут предел групп";
+	}
+
+	int getCountStudents() {
+		return countStudents;
 	}
 
 	void showInfo() {
 		if (uniqId!="") cout << uniqId<<" "<<endl;
 		for (int i = 0; i < countStudents; i++) {
-			students[i].showInfo();
+			students[i]->showInfo();
 		}
 	}
 
-	bool addStudent(Student st) {
-		if (countStudents == 5) {
+
+
+	void addStudent(Student& st) {
+		if (this->countStudents == 5) {
 			cout << "превышен допустимый предел количества студентов";
-			return false;
+			return;
 		}
-		Student* buf = new Student[countStudents + 1];
+		Student** buf = new Student*[countStudents + 1];
 		for (int i = 0; i < countStudents; i++) {
 			buf[i] = students[i];
 		}
-		buf[countStudents++] = st;
-		//delete[]students;
+		for (int i = 0; i < countStudents; i++) {
+			students[i] = nullptr;
+		}
+		delete[]students;
+
+		buf[countStudents] = new Student(st);
+		
+		countStudents++;
 		students = buf;
-		return true;
+	}
+
+	Student* getStudentByIndex(int index) {
+		return students[index];
 	}
 
 
@@ -89,15 +149,36 @@ int main()
 {
 	setlocale(LC_ALL, "");
 	srand(time(NULL));
+	
+
 	int const countGroups = 7;
-	Group* groups = new Group[countGroups];
+	Group** groups = new Group*[countGroups];
+	for (int i = 0; i < 7; i++) {
+		groups[i] = new Group();
+	}
 	for (int i = 0; i < 30; i++) {
-		Student st;
-		while (!groups[random(0, countGroups - 1)].addStudent(st));
+		
+		int indexStudentInGroup = random(0, countGroups - 1);
+		while (groups[indexStudentInGroup]->getCountStudents()!=5) {
+			Student st;
+			for (int j = 0; j < 4; j++) {
+				st.addMark(random(2, 5));
+			}
+			groups[indexStudentInGroup]->addStudent(st);
+		}
+
 	}
 	for (int i = 0; i < countGroups; i++) {
-		groups[i].showInfo();
+		groups[i]->showInfo();
 	}
+
+	/*cout << "test uno student: " << endl;
+	groups[0].showInfo();
+	groups[0].getStudentByIndex(0)->changeMark(0, 12);
+	groups[0].showInfo();*/
+
 	
+
+
 
 }
