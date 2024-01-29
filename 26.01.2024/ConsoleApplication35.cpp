@@ -28,7 +28,11 @@ public:
 	}
 
 	~Student() {
-		if (marks != nullptr) delete[] marks;
+		cout<< uniqId << "was deleted";
+
+		if (this->marks != nullptr) {
+			delete[] marks;
+		}
 	}
 
 	void operator = (Student& st) {
@@ -48,6 +52,26 @@ public:
 		buf[countMarks++] = mark;
 		delete[]marks;
 		marks = buf;
+	}
+
+	void delMark(int index, int mark) {
+		if (countMarks == 0) return;
+		if (countMarks == 1) {
+			countMarks = 0;
+			delete[]marks;
+			marks = nullptr;
+			return;
+		}
+		int* buf = new int[countMarks-1];
+		for (int i = 0; i < index; i++) {
+			buf[i] = marks[i];
+		}
+		for (int i = index+1; i < countMarks; i++) {
+			buf[i-1] = marks[i];
+		}
+		delete[]marks;
+		marks = buf;
+		countMarks--;
 	}
 
 	void changeMark(int index, int mark) {
@@ -124,14 +148,35 @@ public:
 		for (int i = 0; i < countStudents; i++) {
 			buf[i] = students[i];
 		}
-		for (int i = 0; i < countStudents; i++) {
-			students[i] = nullptr;
-		}
 		delete[]students;
 
 		buf[countStudents] = new Student(st);
 		
 		countStudents++;
+		students = buf;
+	}
+
+	void delStudent(int index) {
+		if (countStudents == 0) {
+			return;
+		}
+		if (this->countStudents == 1) {
+			delete[] students[0];
+			students = nullptr;
+			return;
+		}
+		Student** buf = new Student * [countStudents - 1];
+		for (int i = 0; i < index; i++) {
+			buf[i] = students[i];
+		}
+		for (int i = index+1; i < countStudents; i++) {
+			buf[i-1] = students[i];
+		}
+	
+		delete students[index];
+		delete[]students;
+
+		countStudents--;
 		students = buf;
 	}
 
@@ -168,6 +213,12 @@ int main()
 		}
 
 	}
+	for (int i = 0; i < countGroups; i++) {
+		groups[i]->showInfo();
+	}
+
+	groups[0]->delStudent(0);
+	cout << "after remove: " << endl;
 	for (int i = 0; i < countGroups; i++) {
 		groups[i]->showInfo();
 	}
