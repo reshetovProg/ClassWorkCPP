@@ -49,3 +49,8 @@ void Button::update()
 		shape.setFillColor(btnColor);
 	}
 }
+
+std::string Button::getText()
+{
+	return text.getString();
+}

@@ -14,6 +14,7 @@ class Calculator
 								{"1","2","3","*"},
 								{".","0","=","/"} };
 	std::string fieldText="0";
+	std::string operation = "";
 	sf::Text text;
 	sf::Font font;
 public:

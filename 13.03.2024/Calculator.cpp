@@ -45,6 +45,11 @@ void Calculator::update()
 	for (auto& key : keybord) {
 		key.update();
 	}
+	text.setString(fieldText);
+	text.setPosition(sf::Vector2f(
+		365 - fieldText.size() * 38,
+		text.getPosition().y
+	));
 }
 
 void Calculator::processEvent()
@@ -65,6 +70,40 @@ void Calculator::processEvent()
 					(mousePos.y >= key.getPosition().y) &&
 					(mousePos.y <= (key.getPosition().y + key.getSize().y))) {
 					key.changeActive();
+
+					if (event.type == sf::Event::MouseButtonReleased) {
+						if (key.getText()[0] >= '0' && key.getText()[0] <= '9' ||
+							key.getText()[0] == '.') {
+							if (fieldText == "0" && key.getText() != ".") fieldText = "";
+							if (key.getText() == "." &&
+								fieldText.find(".") <= fieldText.size()) {
+								break;
+							}
+							fieldText += key.getText();
+						}
+						else {
+							
+							
+							if (key.getText()[0] == '=') {
+								if (operation != "") {
+									std::cout << operation;
+									
+								}
+								else {
+									std::cout << "empty" << std::endl;
+								}
+							}
+							else {
+								operation = key.getText();
+								fieldText = "0";
+							}
+
+							
+						}
+						
+					}
+					
+						
 				}
 			}
 

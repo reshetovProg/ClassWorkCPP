@@ -18,5 +18,6 @@ public:
 	sf::Vector2f getSize();
 	void changeActive();
 	void update();
+	std::string getText();
 };
 
