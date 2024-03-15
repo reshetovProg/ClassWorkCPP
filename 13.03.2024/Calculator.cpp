@@ -42,6 +42,9 @@ void Calculator::run(){
 
 void Calculator::update()
 {
+	for (auto& key : keybord) {
+		key.update();
+	}
 }
 
 void Calculator::processEvent()
@@ -51,6 +54,22 @@ void Calculator::processEvent()
 	{
 		if (event.type == sf::Event::Closed)
 			window.close();
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) ||
+			event.type == sf::Event::MouseButtonReleased)
+		{
+			std::cout << "mouse is pressed"<<std::endl;
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			for (auto& key : keybord) {
+				if ((mousePos.x >= key.getPosition().x) &&
+					(mousePos.x <= (key.getPosition().x + key.getSize().x)) &&
+					(mousePos.y >= key.getPosition().y) &&
+					(mousePos.y <= (key.getPosition().y + key.getSize().y))) {
+					key.changeActive();
+				}
+			}
+
+		}
+		
 	}
 }
 

@@ -6,7 +6,7 @@ Button::Button(	sf::Vector2f size,
 				std::string str)
 
 {
-
+	btnColor = color;
 	shape.setSize(size);
 	shape.setFillColor(color);
 	shape.setPosition(position);	
@@ -22,4 +22,30 @@ void Button::draw(sf::RenderWindow& window)
 	text.setFont(font);
 	window.draw(shape);
 	window.draw(text);
+}
+
+sf::Vector2f Button::getPosition()
+{
+	return shape.getPosition();
+}
+
+sf::Vector2f Button::getSize()
+{
+	return shape.getSize();
+}
+
+void Button::changeActive()
+{
+	active = !active;
+}
+
+void Button::update()
+{
+	if (active) {
+		sf::Color color = shape.getFillColor();
+		shape.setFillColor(sf::Color(30,30,30));
+	}
+	else {
+		shape.setFillColor(btnColor);
+	}
 }
