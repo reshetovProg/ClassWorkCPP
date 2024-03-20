@@ -1,0 +1,39 @@
+#include "product.h"
+
+
+
+int Product::getPrice()
+{
+    return price->text().toInt();
+}
+void Product::setPrice(int value)
+{
+    price->setNum(value);
+}
+int Product::getCreateSpeed() 
+{
+    return createSpeed->text().toInt();
+}
+void Product::setCreateSpeed(int value)
+{
+    createSpeed->setNum(value);
+}
+Product::Product(QLabel lvl, QLabel price, QLabel createSpeed, QPushButton upgradeSpeedPrice, QPushButton upgradePrice, Ui::MainWindow *ui)
+{
+    this->lvl=&lvl;
+    this->price=&price;
+    this->createSpeed=&createSpeed;
+    this->upgradeSpeedPrice=&upgradeSpeedPrice;
+    this->upgradePrice=&upgradePrice;
+    this->ui=ui;
+    
+}
+
+int Product::getLvl() 
+{
+    return lvl->text().toInt();
+}
+void Product::setLvl(int value)
+{
+    lvl.setNum(value);
+}

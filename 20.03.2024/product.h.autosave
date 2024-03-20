@@ -1,0 +1,45 @@
+#ifndef PRODUCT_H
+#define PRODUCT_H
+
+#include "mainwindow.h"
+
+#include <QLabel>
+#include <QPushButton>
+
+
+
+class Product
+{
+private:
+//    int lvl;
+//    int price;
+//    int createSpeed;
+//    int upgradeSpeedPrice;
+//    int upgradePrice;   
+    Ui::MainWindow *ui;
+    
+    QLabel* lvl;
+    QLabel* price;
+    QLabel* createSpeed;
+    QPushButton* upgradeSpeedPrice;
+    QPushButton* upgradePrice;
+    
+public:
+    Product( QLabel lvl,
+    QLabel price,
+    QLabel createSpeed,
+    QPushButton upgradeSpeedPrice,
+    QPushButton upgradePrice,
+    Ui::MainWindow *ui);
+public:
+    int getLvl();
+    void setLvl(int value);
+    void setPrice(int value);
+    int getCreateSpeed();
+    void setCreateSpeed(int value);
+//    QPushButton* getUpgradeSpeedPrice();
+//    QPushButton* getUpgradePrice();
+    int getPrice();
+};
+
+#endif // PRODUCT_H
